@@ -56,9 +56,6 @@ export function PlayerCard({ player }: PlayerCardProps) { ... }
 
 // Good — page component (default allowed)
 export default function SessionListPage() { ... }
-
-// Bad
-export default function formatDate() { ... }
 ```
 
 ---
@@ -76,18 +73,13 @@ export const PlayerCard = ({ player }: PlayerCardProps) => { ... };
 
 // Good — utility
 export function calculateAge(dob: string): number { ... }
-
-// Bad — utility as arrow
-export const calculateAge = (dob: string): number => { ... };
 ```
 
 ---
 
 ## Variables
 
-- `const` by default — always.
-- `let` only when reassignment is required (loop accumulators, conditional assignment).
-- Never `var`.
+`const` by default; `let` only when reassignment is required; never `var`.
 
 ---
 
@@ -113,8 +105,6 @@ Prefix booleans with a verb that reads naturally:
 // Good
 <button className="flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 focus:outline-none">
 
-// Bad — unsorted, mixed custom CSS
-<button className="text-white hover:bg-blue-700 px-4" style={{ color: 'white' }}>
 ```
 
 ---
@@ -196,10 +186,7 @@ Date: $(date +%Y-%m-%d\ %H:%M)"; }; f'
 Usage: `git cm "feat(sessions): add session list page"`
 
 This writes the subject line you provide and appends the `Date:` line automatically.
-
-> **Note:** git also stores precise author/committer timestamps in commit metadata
-> (visible with `git log --format="%h %ai %s"`). The `Date:` body line is a
-> human-friendly supplement, not a replacement.
+The `Date:` body line supplements git's built-in timestamp metadata (`git log --format="%h %ai %s"`).
 
 ---
 

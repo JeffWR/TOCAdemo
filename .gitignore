@@ -44,4 +44,7 @@ test-results/
 *.swp
 *.swo
 
-# Note: SampleData/ is intentionally NOT ignored — JSON fixtures are version-controlled
+# Claude local permission overrides — personal dev setting, not team config
+.claude/settings.local.json
+
+# Note: sampledata/ is intentionally NOT ignored — JSON fixtures are version-controlled

@@ -11,7 +11,7 @@
 A logged-in player can view their training session history and upcoming appointments.
 
 - **Stack:** React 18 + TypeScript 5 + Vite 5 (frontend) · Node 20 + Express 4 + TypeScript 5 (backend)
-- **Data:** `SampleData/*.json` — no database
+- **Data:** `sampledata/*.json` — no database
 - **Testing:** Vitest + React Testing Library
 - See [README.md](./README.md) for product context.
 

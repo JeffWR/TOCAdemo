@@ -37,7 +37,7 @@
 |---|---|
 | TanStack Query | Over-engineering for a read-mostly JSON-file API |
 | Redux / Zustand | Overkill; React Context + URL state is sufficient |
-| MongoDB / PostgreSQL | No persistence layer needed; SampleData/ JSON files are the data source |
+| MongoDB / PostgreSQL | No persistence layer needed; sampledata/ JSON files are the data source |
 | Axios | Native fetch is sufficient; removes a dependency |
 | tRPC | Backend and frontend are separate processes here; REST is clearer |
 | Prisma / TypeORM | No database |
@@ -46,9 +46,9 @@
 
 ## Data Files
 
-Located in `SampleData/`. All files are version-controlled (not gitignored).
+Located in `sampledata/`. All files are version-controlled (not gitignored).
 
-### `SampleData/profiles.json`
+### `sampledata/profiles.json`
 Player profiles — one record per player.
 
 | Field | Type | Description |
@@ -63,7 +63,7 @@ Player profiles — one record per player.
 | `centerName` | string | Home training center |
 | `createdAt` | ISO datetime string | Account creation timestamp |
 
-### `SampleData/trainingSessions.json`
+### `sampledata/trainingSessions.json`
 Past training sessions with performance metrics.
 
 | Field | Type | Description |
@@ -80,7 +80,7 @@ Past training sessions with performance metrics.
 | `avgSpeedOfPlay` | number | Average speed metric |
 | `numberOfExercises` | number | Distinct exercises completed |
 
-### `SampleData/appointments.json`
+### `sampledata/appointments.json`
 Upcoming or past scheduled appointments.
 
 | Field | Type | Description |
@@ -109,7 +109,7 @@ Upcoming or past scheduled appointments.
 TOCAdemo/
 ├── frontend/          # Vite + React + TS
 ├── backend/           # Express + TS
-├── SampleData/        # JSON data fixtures (version-controlled)
+├── sampledata/        # JSON data fixtures (version-controlled)
 └── docs/              # Architecture docs
 ```
 
