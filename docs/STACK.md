@@ -8,10 +8,10 @@
 
 | Technology | Version | Rationale |
 |---|---|---|
-| React | 18 | Industry standard UI library; concurrent features for responsiveness |
+| React | 19 | Latest stable; improved ref handling and async transitions |
 | TypeScript | 5 | Type safety; enables refactoring confidence; interview demonstrates maturity |
-| Vite | 5 | Fast dev server with HMR; minimal config; native ESM |
-| React Router | 6 | Declarative client-side routing; data APIs optional but available |
+| Vite | 7 | Fast dev server with HMR; minimal config; native ESM |
+| React Router | 7 | Declarative client-side routing; legacy component API used for simplicity |
 | TailwindCSS | 3 | Utility-first; no CSS file bloat; consistent design system in one pass |
 | Vitest | latest | Same config as Vite; faster than Jest for TS projects; first-class ESM |
 | React Testing Library | latest | Tests user behaviour not implementation; pairs naturally with RTL philosophy |
@@ -23,7 +23,7 @@
 
 | Technology | Version | Rationale |
 |---|---|---|
-| Node.js | 20 LTS | Long-term support; native `fetch`; stable |
+| Node.js | 22 LTS | Long-term support; native `fetch`; stable |
 | Express | 4 | Minimal, well-understood; no overhead for a JSON-file API |
 | TypeScript | 5 | Shared tsconfig patterns; consistent with frontend |
 | Vitest | latest | Single test runner across the monorepo |
