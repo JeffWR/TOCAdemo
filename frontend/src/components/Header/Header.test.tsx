@@ -44,6 +44,17 @@ describe('Header', () => {
     expect(screen.getByRole('button', { name: /log out/i })).toBeDefined();
   });
 
+  it('does not render the logout button when no email is in context', () => {
+    render(
+      <MemoryRouter>
+        <PlayerProvider>
+          <Header />
+        </PlayerProvider>
+      </MemoryRouter>,
+    );
+    expect(screen.queryByRole('button', { name: /log out/i })).toBeNull();
+  });
+
   it('calls logout handler when logout button is clicked', async () => {
     const user = userEvent.setup();
     const onLogout = vi.fn();

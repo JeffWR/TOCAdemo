@@ -1,11 +1,11 @@
-import React from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { Header } from '../Header';
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export function Layout({ children }: LayoutProps): React.ReactElement {
+export function Layout({ children }: LayoutProps): ReactElement {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />

@@ -1,11 +1,11 @@
-import React from 'react';
+import type { ReactElement } from 'react';
 
 interface ErrorMessageProps {
   message: string;
   heading?: string;
 }
 
-export function ErrorMessage({ message, heading = 'Error' }: ErrorMessageProps): React.ReactElement {
+export function ErrorMessage({ message, heading = 'Error' }: ErrorMessageProps): ReactElement {
   return (
     <div role="alert" className="rounded-md bg-red-50 border border-red-200 p-4">
       <p className="text-sm font-semibold text-red-700">{heading}</p>

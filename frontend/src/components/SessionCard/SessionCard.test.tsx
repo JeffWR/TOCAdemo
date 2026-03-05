@@ -47,6 +47,11 @@ describe('SessionCard', () => {
     expect(screen.getByText('15')).toBeDefined();
   });
 
+  it('renders the formatted session date', () => {
+    renderCard();
+    expect(screen.getByText('Mar 1, 2024')).toBeDefined();
+  });
+
   it('contains a link using the session id', () => {
     renderCard();
     const link = screen.getByRole('link');

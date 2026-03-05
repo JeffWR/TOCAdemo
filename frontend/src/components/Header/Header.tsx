@@ -1,12 +1,12 @@
-import React from 'react';
+import type { ReactElement } from 'react';
 import { usePlayerContext } from '../../context/PlayerContext';
 
 interface HeaderProps {
   onLogout?: () => void;
 }
 
-export function Header({ onLogout }: HeaderProps): React.ReactElement {
-  const { profile, logout } = usePlayerContext();
+export function Header({ onLogout }: HeaderProps): ReactElement {
+  const { email, profile, logout } = usePlayerContext();
 
   function handleLogout(): void {
     logout();
@@ -22,13 +22,15 @@ export function Header({ onLogout }: HeaderProps): React.ReactElement {
         {profile !== null && (
           <span className="text-sm text-gray-600">Hi, {profile.firstName}</span>
         )}
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="rounded-md bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
-        >
-          Log out
-        </button>
+        {email !== null && (
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="rounded-md bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+          >
+            Log out
+          </button>
+        )}
       </div>
     </header>
   );

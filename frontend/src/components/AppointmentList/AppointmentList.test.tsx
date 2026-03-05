@@ -25,6 +25,7 @@ describe('AppointmentList', () => {
     render(<AppointmentList appointments={appointments} />);
     expect(screen.getByText('Coach Sam')).toBeDefined();
     expect(screen.getByText('Coach Taylor')).toBeDefined();
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
   });
 
   it('shows empty state message when appointments array is empty', () => {

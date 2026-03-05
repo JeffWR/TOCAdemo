@@ -14,9 +14,14 @@ describe('LoadingSpinner', () => {
     expect(screen.getByLabelText('Fetching sessions')).toBeDefined();
   });
 
-  it('applies the animate-spin class for the spinner visual', () => {
+  it('spinner visual has animate-spin class', () => {
     render(<LoadingSpinner />);
-    const spinner = screen.getByRole('status').firstElementChild;
-    expect(spinner?.className).toContain('animate-spin');
+    const visual = screen.getByTestId('spinner-visual');
+    expect(visual.className).toContain('animate-spin');
+  });
+
+  it('spinner visual is hidden from assistive technology', () => {
+    render(<LoadingSpinner />);
+    expect(screen.getByTestId('spinner-visual').getAttribute('aria-hidden')).toBe('true');
   });
 });
