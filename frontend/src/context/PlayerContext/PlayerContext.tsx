@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import type { Profile } from '../../types';
 
 interface PlayerContextValue {
@@ -31,22 +31,22 @@ export function PlayerProvider({
   children,
   initialEmail = null,
   initialProfile = null,
-}: PlayerProviderProps): React.ReactElement {
+}: PlayerProviderProps): ReactElement {
   const [email, setEmailState] = useState<string | null>(initialEmail);
   const [profile, setProfileState] = useState<Profile | null>(initialProfile);
 
-  function setEmail(newEmail: string): void {
+  const setEmail = useCallback((newEmail: string): void => {
     setEmailState(newEmail);
-  }
+  }, []);
 
-  function setProfile(newProfile: Profile): void {
+  const setProfile = useCallback((newProfile: Profile): void => {
     setProfileState(newProfile);
-  }
+  }, []);
 
-  function logout(): void {
+  const logout = useCallback((): void => {
     setEmailState(null);
     setProfileState(null);
-  }
+  }, []);
 
   return (
     <PlayerContext.Provider value={{ email, profile, setEmail, setProfile, logout }}>
