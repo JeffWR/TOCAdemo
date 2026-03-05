@@ -1,16 +1,18 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 import { PlayerProvider } from '../../context/PlayerContext';
 import { Layout } from './Layout';
 
 function renderLayout(): void {
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={['/home']}>
       <PlayerProvider initialEmail="test@example.com">
-        <Layout>
-          <p>Page content</p>
-        </Layout>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/home" element={<p>Page content</p>} />
+          </Route>
+        </Routes>
       </PlayerProvider>
     </MemoryRouter>,
   );
@@ -22,7 +24,7 @@ describe('Layout', () => {
     expect(screen.getByText('TOCA')).toBeDefined();
   });
 
-  it('renders children inside a main element', () => {
+  it('renders child route content inside a main element', () => {
     renderLayout();
     const main = screen.getByRole('main');
     expect(main).toBeDefined();
