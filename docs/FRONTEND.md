@@ -1,6 +1,6 @@
 # Frontend Documentation
 
-**Last Updated:** 2026-03-05
+**Last Updated:** 2026-03-05 (Chunk 2: UI components added)
 **Stack:** React 19 · TypeScript 5 · Vite 7 · React Router 7
 **Data:** Service layer + custom hooks + React Context
 
@@ -48,6 +48,50 @@ Response ({ success, data } or { success, error } envelope)
 | `src/hooks/useSession.ts` | Fetch and manage single session by ID (from URL param) | `{ session, loading, error }` | `useEffect`, `useState`, `sessionService`, `cancelled` flag pattern |
 | `src/hooks/useAppointments.ts` | Fetch and manage all appointments for logged-in player | `{ appointments, loading, error }` | `useEffect`, `useState`, `usePlayerContext`, `appointmentService`, `cancelled` flag pattern |
 | `src/test/playerWrapper.tsx` | Test utility for wrapping hooks in PlayerContext | `createPlayerWrapper({ email?, profileId? })` | `PlayerProvider`, `ReactNode`, `renderHook` (from RTL) |
+
+---
+
+## Component Library (src/components/)
+
+All components live in their own folder following the Component Folder Pattern (§2). Each folder contains `ComponentName.tsx`, `ComponentName.test.tsx`, and `index.ts`.
+
+<!-- AUTO-GENERATED from src/components/** -->
+| Component | Responsibility | Key Props |
+|---|---|---|
+| `LoadingSpinner` | Accessible animated spinner shown during data fetches | `label?: string` (aria-label, default `"Loading"`) |
+| `ErrorMessage` | Standardised error display box with `role="alert"` | `message: string`, `heading?: string` (default `"Error"`) |
+| `StatBadge` | Single stat chip — label above, value below | `label: string`, `value: string \| number` |
+| `SessionCard` | Training session summary row; links to `/sessions/:id` | `session: TrainingSession` |
+| `AppointmentCard` | Single appointment row with "Upcoming" badge | `appointment: Appointment` |
+| `SessionList` | Maps a `TrainingSession[]` to `SessionCard` list; shows empty-state text | `sessions: TrainingSession[]` |
+| `AppointmentList` | Maps an `Appointment[]` to `AppointmentCard` list; shows empty-state text | `appointments: Appointment[]` |
+| `Header` | Top bar: TOCA brand + logged-in player first name + Log out button | `onLogout?: () => void` |
+| `Layout` | Wraps protected pages — renders `<Header>` above a `<main>` content area | `children: ReactNode` |
+<!-- END AUTO-GENERATED -->
+
+### Composition hierarchy
+
+```
+Layout
+├── Header           ← reads profile.firstName from PlayerContext
+└── <main>
+    ├── SessionList
+    │   └── SessionCard → StatBadge (score, goals, streak, exercises)
+    └── AppointmentList
+        └── AppointmentCard
+```
+
+### MemoryRouter in tests
+
+Any component that renders a React Router `<Link>` (currently `SessionCard`) must be wrapped in `<MemoryRouter>` inside its test file:
+
+```tsx
+render(
+  <MemoryRouter>
+    <SessionCard session={session} />
+  </MemoryRouter>,
+);
+```
 
 ---
 

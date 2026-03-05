@@ -9,15 +9,15 @@ _Part of the [Architecture Patterns](../PATTERNS.md) living document._
 Every reusable component lives in its own folder:
 
 ```
-src/components/PlayerCard/
-├── PlayerCard.tsx        ← implementation
-├── PlayerCard.test.tsx   ← co-located tests
-└── index.ts              ← re-exports PlayerCard (named)
+src/components/SessionCard/
+├── SessionCard.tsx        ← implementation
+├── SessionCard.test.tsx   ← co-located tests
+└── index.ts               ← re-exports SessionCard (named)
 ```
 
 `index.ts` content:
 ```ts
-export { PlayerCard } from './PlayerCard';
+export { SessionCard } from './SessionCard';
 ```
 
 **Rules:**
@@ -171,7 +171,14 @@ Three sources of state — no global state library:
 
 - Hooks expose `error: string | null` in their return value.
 - `<ErrorBoundary>` wraps the app in `main.tsx` to catch render-time errors.
-- Each page displays a user-friendly error message when `error` is non-null.
+- Each page displays a user-friendly error message when `error` is non-null, using `<ErrorMessage>`.
+
+```tsx
+// Example page usage
+if (error) return <ErrorMessage message={error} />;
+```
+
+`ErrorMessage` renders with `role="alert"` for accessibility and accepts an optional `heading` prop.
 
 ---
 
@@ -196,8 +203,8 @@ const { loading, error } = useProfile();
 // The resolved profile is read from context, not from the hook return value
 const { profile } = usePlayerContext();
 
-if (loading) return <Spinner />;
-if (error) return <ErrorAlert message={error} />;
+if (loading) return <LoadingSpinner />;
+if (error) return <ErrorMessage message={error} />;
 return <ProfileCard profile={profile!} />;
 ```
 
