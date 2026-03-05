@@ -22,6 +22,8 @@
 | 11 | Routing Pattern | [frontend.md](./patterns/frontend.md#11-routing-pattern) |
 | 12 | State Management | [frontend.md](./patterns/frontend.md#12-state-management) |
 | 13 | Error Handling | [frontend.md](./patterns/frontend.md#13-error-handling-frontend) · [backend.md](./patterns/backend.md#13-error-handling-backend) |
+| 14 | Async Hook Shape | [frontend.md](./patterns/frontend.md#14-async-hook-shape) |
+| 15 | Context Seeding for Tests | [frontend.md](./patterns/frontend.md#15-context-seeding-for-tests) |
 
 ---
 

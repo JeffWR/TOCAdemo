@@ -172,3 +172,126 @@ Three sources of state — no global state library:
 - Hooks expose `error: string | null` in their return value.
 - `<ErrorBoundary>` wraps the app in `main.tsx` to catch render-time errors.
 - Each page displays a user-friendly error message when `error` is non-null.
+
+---
+
+## §14. Async Hook Shape
+
+All hooks that fetch data return a consistent shape to simplify component code:
+
+```ts
+{
+  data: T | null;        // null until fetch completes
+  loading: boolean;      // true initially; false after fetch completes
+  error: string | null;  // null unless an error occurred
+}
+```
+
+**Example:**
+```ts
+const { profile, loading, error } = useProfile();
+
+if (loading) return <Spinner />;
+if (error) return <ErrorAlert message={error} />;
+return <ProfileCard profile={profile!} />;
+```
+
+### Cancelled Flag Pattern
+
+Each hook's `useEffect` uses a `cancelled` flag to prevent stale state updates:
+
+```ts
+useEffect(() => {
+  let cancelled = false;
+
+  async function fetchData() {
+    try {
+      const result = await service.get(...);
+      if (!cancelled) setData(result);  // Only update if still mounted
+    } catch (err) {
+      if (!cancelled) setError(err instanceof Error ? err.message : 'Unknown error');
+    }
+  }
+
+  fetchData();
+
+  return () => {
+    cancelled = true;  // Cleanup: set flag so state is not updated after unmount
+  };
+}, [/* deps */]);
+```
+
+**Why:** Prevents warnings ("Can't perform a React state update on an unmounted component") and memory leaks.
+
+### Loading Initialisation
+
+If the required dependency is already available at mount time, initialize `loading` to `false`:
+
+```ts
+const { profile } = usePlayerContext();
+const [loading, setLoading] = useState(profile ? false : true);
+```
+
+**Why:** Avoids UI flicker when data is pre-seeded or cached in context.
+
+---
+
+## §15. Context Seeding for Tests
+
+To make hooks testable without extensive mocking, context providers accept `initialXxx` props that pre-seed state:
+
+```ts
+export const PlayerProvider = ({
+  children,
+  initialEmail,
+  initialProfile
+}: {
+  children: ReactNode;
+  initialEmail?: string;
+  initialProfile?: Profile;
+}) => {
+  const [email, setEmail] = useState(initialEmail ?? null);
+  const [profile, setProfile] = useState(initialProfile ?? null);
+  // ...
+};
+```
+
+**Test helper utility:**
+```ts
+// src/test/playerWrapper.tsx
+export function createPlayerWrapper({
+  email = 'test@example.com',
+  profileId = 'test-id'
+}: {
+  email?: string;
+  profileId?: string;
+} = {}) {
+  return function Wrapper({ children }: { children: ReactNode }) {
+    return (
+      <PlayerProvider initialEmail={email} initialProfile={{ id: profileId, ... }}>
+        {children}
+      </PlayerProvider>
+    );
+  };
+}
+```
+
+**Usage:**
+```ts
+import { renderHook } from '@testing-library/react';
+import { createPlayerWrapper } from '../test/playerWrapper';
+import { useAppointments } from './useAppointments';
+
+test('useAppointments returns appointments for player', () => {
+  const { result } = renderHook(() => useAppointments(), {
+    wrapper: createPlayerWrapper({ profileId: 'player-123' })
+  });
+
+  // ...
+});
+```
+
+**Benefits:**
+- No need to mock `usePlayerContext`
+- Cleaner test code than wrapping with JSX manually
+- Controlled initial state without complex setup
