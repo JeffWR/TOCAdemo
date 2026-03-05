@@ -37,7 +37,10 @@ describe('getProfileByEmail', () => {
     await getProfileByEmail(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ success: false, error: 'email query param is required' });
+    expect(res.json).toHaveBeenCalledWith({
+      success: false,
+      error: 'email query param is required',
+    });
   });
 
   it('returns 404 when no profile matches the email', async () => {

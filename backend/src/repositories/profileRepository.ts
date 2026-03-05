@@ -13,6 +13,5 @@ export const profileRepository = {
 
   findById: (id: string): Profile | undefined => profiles.find(p => p.id === id),
 
-  findByEmail: (email: string): Profile | undefined =>
-    profiles.find(p => p.email === email),
+  findByEmail: (email: string): Profile | undefined => profiles.find(p => p.email === email),
 };

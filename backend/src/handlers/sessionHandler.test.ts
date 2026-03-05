@@ -36,7 +36,10 @@ describe('getSessionsByPlayer', () => {
     await getSessionsByPlayer(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ success: false, error: 'playerId query param is required' });
+    expect(res.json).toHaveBeenCalledWith({
+      success: false,
+      error: 'playerId query param is required',
+    });
   });
 
   it('returns 200 with sessions array when playerId is valid', async () => {

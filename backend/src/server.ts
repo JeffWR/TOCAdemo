@@ -19,6 +19,7 @@ app.use('/api/appointments', appointmentsRouter);
 app.use(errorMiddleware);
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console -- startup message is intentional server logging
   console.info(`Backend running on http://localhost:${PORT}`);
 });
 

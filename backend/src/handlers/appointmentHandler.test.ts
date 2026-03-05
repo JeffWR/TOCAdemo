@@ -30,7 +30,10 @@ describe('getAppointmentsByPlayer', () => {
     await getAppointmentsByPlayer(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ success: false, error: 'playerId query param is required' });
+    expect(res.json).toHaveBeenCalledWith({
+      success: false,
+      error: 'playerId query param is required',
+    });
   });
 
   it('returns 200 with appointments array when playerId is valid', async () => {
