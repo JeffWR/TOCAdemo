@@ -3,7 +3,9 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { useSession } from './useSession';
 import * as sessionService from '../services/sessionService';
 import type { TrainingSession } from '../types';
-import { createPlayerWrapper } from '../test/playerWrapper';
+
+// useSession takes id as a plain argument — it does not use PlayerContext,
+// so no wrapper is needed.
 
 const mockSession: TrainingSession = {
   id: 'sess-1',
@@ -27,9 +29,7 @@ describe('useSession', () => {
   it('fetches the session with the given id', async () => {
     const spy = vi.spyOn(sessionService, 'getSessionById').mockResolvedValue(mockSession);
 
-    const { result } = renderHook(() => useSession('sess-1'), {
-      wrapper: createPlayerWrapper({ email: null, profileId: null }),
-    });
+    const { result } = renderHook(() => useSession('sess-1'));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
@@ -41,13 +41,21 @@ describe('useSession', () => {
   it('returns error when fetch fails', async () => {
     vi.spyOn(sessionService, 'getSessionById').mockRejectedValue(new Error('Not found'));
 
-    const { result } = renderHook(() => useSession('missing'), {
-      wrapper: createPlayerWrapper({ email: null, profileId: null }),
-    });
+    const { result } = renderHook(() => useSession('missing'));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.error).toBe('Not found');
     expect(result.current.session).toBeNull();
+  });
+
+  it('does not fetch and starts with loading: false when id is empty', () => {
+    const spy = vi.spyOn(sessionService, 'getSessionById');
+
+    const { result } = renderHook(() => useSession(''));
+
+    expect(spy).not.toHaveBeenCalled();
+    expect(result.current.loading).toBe(false);
+    expect(result.current.error).toBeNull();
   });
 });

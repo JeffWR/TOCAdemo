@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { Appointment } from '../types';
 import { usePlayerContext } from '../context/PlayerContext';
 import { getAppointmentsByPlayer } from '../services/appointmentService';
+import type { Appointment } from '../types';
 
 interface UseAppointmentsResult {
   appointments: Appointment[];
@@ -31,7 +31,7 @@ export function useAppointments(): UseAppointmentsResult {
     setError(null);
 
     getAppointmentsByPlayer(playerId)
-      .then((data) => {
+      .then(data => {
         if (!cancelled) setAppointments(data);
       })
       .catch((err: unknown) => {

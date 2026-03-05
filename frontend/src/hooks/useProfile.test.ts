@@ -3,10 +3,10 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { useProfile } from './useProfile';
 import * as profileService from '../services/profileService';
 import type { Profile } from '../types';
+import { createPlayerWrapper } from '../test/playerWrapper';
 
 // Hooks that call usePlayerContext need a provider wrapper.
 // We import a helper that wraps children in <PlayerProvider>.
-import { createPlayerWrapper } from '../test/playerWrapper';
 
 const mockProfile: Profile = {
   id: 'p1',
@@ -25,7 +25,7 @@ beforeEach(() => {
 });
 
 describe('useProfile', () => {
-  it('returns loading: true initially and loading: false with data after fetch', async () => {
+  it('returns loading: true initially and loading: false after fetch', async () => {
     vi.spyOn(profileService, 'getProfileByEmail').mockResolvedValue(mockProfile);
 
     const { result } = renderHook(() => useProfile(), {
@@ -33,11 +33,9 @@ describe('useProfile', () => {
     });
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.profile).toBeNull();
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.profile).toEqual(mockProfile);
     expect(result.current.error).toBeNull();
   });
 
@@ -51,16 +49,17 @@ describe('useProfile', () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.error).toBe('Not found');
-    expect(result.current.profile).toBeNull();
   });
 
-  it('does not fetch when email is null', () => {
+  it('does not fetch and starts with loading: false when email is null', () => {
     const spy = vi.spyOn(profileService, 'getProfileByEmail');
 
-    renderHook(() => useProfile(), {
+    const { result } = renderHook(() => useProfile(), {
       wrapper: createPlayerWrapper({ email: null }),
     });
 
     expect(spy).not.toHaveBeenCalled();
+    expect(result.current.loading).toBe(false);
+    expect(result.current.error).toBeNull();
   });
 });

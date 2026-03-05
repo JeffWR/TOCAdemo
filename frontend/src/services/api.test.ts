@@ -32,8 +32,9 @@ describe('apiFetch', () => {
       }),
     );
 
-    await expect(apiFetch('/api/test')).rejects.toThrow('Not found');
-    await expect(apiFetch('/api/test')).rejects.toBeInstanceOf(ApiError);
+    const rejection = apiFetch('/api/test');
+    await expect(rejection).rejects.toThrow('Not found');
+    await expect(rejection).rejects.toBeInstanceOf(ApiError);
   });
 
   it('propagates network-level errors (fetch rejects)', async () => {
@@ -45,8 +46,9 @@ describe('apiFetch', () => {
   it('throws ApiError when HTTP status is not ok (e.g. 404)', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 404, json: vi.fn() }));
 
-    await expect(apiFetch('/api/test')).rejects.toThrow('Request failed with status 404');
-    await expect(apiFetch('/api/test')).rejects.toBeInstanceOf(ApiError);
+    const rejection = apiFetch('/api/test');
+    await expect(rejection).rejects.toThrow('Request failed with status 404');
+    await expect(rejection).rejects.toBeInstanceOf(ApiError);
   });
 
   it('throws ApiError when the response body is not valid JSON', async () => {
@@ -58,8 +60,9 @@ describe('apiFetch', () => {
       }),
     );
 
-    await expect(apiFetch('/api/test')).rejects.toThrow('Server returned an invalid response');
-    await expect(apiFetch('/api/test')).rejects.toBeInstanceOf(ApiError);
+    const rejection = apiFetch('/api/test');
+    await expect(rejection).rejects.toThrow('Server returned an invalid response');
+    await expect(rejection).rejects.toBeInstanceOf(ApiError);
   });
 
   it('throws ApiError with fallback message when error field is missing', async () => {

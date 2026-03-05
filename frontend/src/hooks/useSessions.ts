@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import type { TrainingSession } from '../types';
 import { usePlayerContext } from '../context/PlayerContext';
 import { getSessionsByPlayer } from '../services/sessionService';
+import type { TrainingSession } from '../types';
 
 interface UseSessionsResult {
   sessions: TrainingSession[];
@@ -31,7 +31,7 @@ export function useSessions(): UseSessionsResult {
     setError(null);
 
     getSessionsByPlayer(playerId)
-      .then((data) => {
+      .then(data => {
         if (!cancelled) setSessions(data);
       })
       .catch((err: unknown) => {

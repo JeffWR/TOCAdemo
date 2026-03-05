@@ -14,17 +14,19 @@ interface UseSessionResult {
  */
 export function useSession(id: string): UseSessionResult {
   const [session, setSession] = useState<TrainingSession | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(Boolean(id));
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!id) return;
+
     let cancelled = false;
 
     setLoading(true);
     setError(null);
 
     getSessionById(id)
-      .then((data) => {
+      .then(data => {
         if (!cancelled) setSession(data);
       })
       .catch((err: unknown) => {

@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
-import type { Profile } from '../types';
 import { usePlayerContext } from '../context/PlayerContext';
 import { getProfileByEmail } from '../services/profileService';
 
 interface UseProfileResult {
-  profile: Profile | null;
   loading: boolean;
   error: string | null;
 }
 
 /**
  * Fetch the current player's profile using the email stored in PlayerContext.
+ * On success, writes the resolved Profile into PlayerContext so that
+ * useSessions and useAppointments can read profile.id without re-fetching.
  * - Returns { loading: true } while the fetch is in-flight.
- * - Returns { profile } on success.
  * - Returns { error } if the fetch fails.
  * - Does nothing if email is null (not yet logged in).
+ *
+ * Callers read the profile value directly from usePlayerContext().profile.
  */
 export function useProfile(): UseProfileResult {
-  const { email } = usePlayerContext();
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const { email, setProfile } = usePlayerContext();
   // Start loading immediately if email is already in context on mount.
   const [loading, setLoading] = useState<boolean>(email !== null);
   const [error, setError] = useState<string | null>(null);
@@ -32,9 +32,9 @@ export function useProfile(): UseProfileResult {
     setError(null);
 
     getProfileByEmail(email)
-      .then(data => {
+      .then((data) => {
         if (!cancelled) {
-          setProfile(data);
+          setProfile(data); // write resolved profile into context for downstream hooks
         }
       })
       .catch((err: unknown) => {
@@ -52,7 +52,7 @@ export function useProfile(): UseProfileResult {
     return () => {
       cancelled = true;
     };
-  }, [email]);
+  }, [email, setProfile]);
 
-  return { profile, loading, error };
+  return { loading, error };
 }

@@ -44,6 +44,7 @@ describe('useAppointments', () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.appointments).toEqual([]);
+    expect(result.current.error).toBeNull();
   });
 
   it('returns error when fetch fails', async () => {

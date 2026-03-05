@@ -37,9 +37,9 @@ export interface ApiSuccess<T> {
   data: T;
 }
 
-export interface ApiError {
+export interface ApiFailure {
   success: false;
   error: string;
 }
 
-export type ApiResponse<T> = ApiSuccess<T> | ApiError;
+export type ApiResponse<T> = ApiSuccess<T> | ApiFailure;

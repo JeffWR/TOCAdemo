@@ -31,9 +31,10 @@ function makeStubProfile(id: string): Profile {
  *   createPlayerWrapper({ email: 'user@example.com' })           // email only
  *   createPlayerWrapper({ email: null, profileId: 'player-1' })  // profile only
  */
-export function createPlayerWrapper(options: PlayerWrapperOptions) {
-  const initialProfile =
-    options.profileId != null ? makeStubProfile(options.profileId) : undefined;
+export function createPlayerWrapper(
+  options: PlayerWrapperOptions,
+): ({ children }: { children: ReactNode }) => React.ReactElement {
+  const initialProfile = options.profileId != null ? makeStubProfile(options.profileId) : undefined;
 
   return function Wrapper({ children }: { children: ReactNode }): React.ReactElement {
     return (
