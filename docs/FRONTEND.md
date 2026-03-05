@@ -37,12 +37,13 @@ Response ({ success, data } or { success, error } envelope)
 | File | Responsibility | Exports | Key Dependencies |
 |---|---|---|---|
 | `src/services/api.ts` | Base fetch wrapper, error handling, response envelope unwrapping | `apiFetch<T>(url)`, `ApiError` class | `fetch` (native), `types` |
+| `src/types/index.ts` | Shared TypeScript interfaces and types | `Profile`, `TrainingSession`, `Appointment`, `ApiSuccess<T>`, `ApiFailure` | none |
 | `src/services/profileService.ts` | Profile data access methods | `getProfileByEmail(email)`, `getProfileById(id)` | `api.ts`, `types/Profile` |
 | `src/services/sessionService.ts` | Training session data access methods | `getSessionsByPlayer(playerId)`, `getSessionById(id)` | `api.ts`, `types/TrainingSession` |
 | `src/services/appointmentService.ts` | Appointment data access methods | `getAppointmentsByPlayer(playerId)` | `api.ts`, `types/Appointment` |
 | `src/context/PlayerContext/PlayerContext.tsx` | Auth state management via React Context | `PlayerProvider` component, `usePlayerContext()` hook | `createContext`, `useState`, `PropsWithChildren` |
 | `src/context/PlayerContext/index.ts` | Context re-export | `PlayerProvider`, `usePlayerContext` | `PlayerContext.tsx` |
-| `src/hooks/useProfile.ts` | Fetch and manage single player profile | `{ profile, loading, error }` | `useEffect`, `useState`, `usePlayerContext`, `profileService`, `cancelled` flag pattern |
+| `src/hooks/useProfile.ts` | Fetch player profile by email; writes profile to context for downstream hooks | `{ loading, error }` (returns loading/error only; writes profile to context via `setProfile`) | `useEffect`, `useState`, `usePlayerContext`, `profileService`, `cancelled` flag pattern |
 | `src/hooks/useSessions.ts` | Fetch and manage all training sessions for logged-in player | `{ sessions, loading, error }` | `useEffect`, `useState`, `usePlayerContext`, `sessionService`, `cancelled` flag pattern |
 | `src/hooks/useSession.ts` | Fetch and manage single session by ID (from URL param) | `{ session, loading, error }` | `useEffect`, `useState`, `sessionService`, `cancelled` flag pattern |
 | `src/hooks/useAppointments.ts` | Fetch and manage all appointments for logged-in player | `{ appointments, loading, error }` | `useEffect`, `useState`, `usePlayerContext`, `appointmentService`, `cancelled` flag pattern |
@@ -187,13 +188,16 @@ const [loading, setLoading] = useState(profile ? false : true);
 
 - Reads `email` from context
 - Fetches profile via `profileService.getProfileByEmail(email)`
-- Returns `{ profile, loading, error }`
+- On success, writes profile to context via `setProfile(data)` so that `useSessions` and `useAppointments` can read `profile.id`
+- Returns `{ loading, error }` only; the resolved profile is accessible via `usePlayerContext().profile`
+- Does not fetch if email is `null` (not yet logged in)
 
 ### useSessions
 
-- Reads `profile` from context
-- Fetches sessions via `sessionService.getSessionsByPlayer(profile.id)`
+- Reads `profile` from context (populated by `useProfile` on successful login)
+- Fetches sessions via `sessionService.getSessionsByPlayer(profile.id)` once profile is available
 - Returns `{ sessions, loading, error }`
+- Does not fetch if profile is not yet in context
 
 ### useSession
 
@@ -203,9 +207,10 @@ const [loading, setLoading] = useState(profile ? false : true);
 
 ### useAppointments
 
-- Reads `profile` from context
-- Fetches appointments via `appointmentService.getAppointmentsByPlayer(profile.id)`
+- Reads `profile` from context (populated by `useProfile` on successful login)
+- Fetches appointments via `appointmentService.getAppointmentsByPlayer(profile.id)` once profile is available
 - Returns `{ appointments, loading, error }`
+- Does not fetch if profile is not yet in context
 
 ---
 
@@ -222,14 +227,12 @@ export function createPlayerWrapper({
 }: {
   email?: string;
   profileId?: string;
-} = {}) {
-  return function Wrapper({ children }: { children: ReactNode }) {
-    return (
-      <PlayerProvider initialEmail={email} initialProfile={{ id: profileId, ... }}>
-        {children}
-      </PlayerProvider>
-    );
-  };
+} = {}): React.ReactElement {
+  return (
+    <PlayerProvider initialEmail={email} initialProfile={{ id: profileId, ... }}>
+      {children}
+    </PlayerProvider>
+  );
 }
 ```
 
@@ -315,16 +318,23 @@ The `cancelled` flag pattern is simpler than `AbortController` for this use case
 **User logs in with email `alice@example.com`:**
 
 1. User enters email on login page
-2. `handleLogin` calls `setEmail('alice@example.com')` → updates `PlayerContext`
+2. `handleLogin` calls `setEmail('alice@example.com')` → updates `PlayerContext.email`
 3. App navigates to `/sessions`
-4. `SessionListPage` calls `useSessions()`
-5. `useSessions()` reads `profile` from context → gets `profile.id`
-6. `useEffect` calls `sessionService.getSessionsByPlayer(profile.id)`
+4. `SessionListPage` calls `useProfile()` and `useSessions()`
+5. **useProfile hook:**
+   - Reads `email` from context
+   - Calls `profileService.getProfileByEmail('alice@example.com')`
+   - On success, calls `setProfile(profileData)` → writes profile to context
+6. `useSessions()` waits for `profile` to appear in context, then:
+   - Reads `profile.id` from context
+   - Calls `sessionService.getSessionsByPlayer(profile.id)`
 7. Service calls `apiFetch('/sessions?playerId=...')`
 8. `apiFetch` calls backend → unwraps response → returns `TrainingSession[]`
 9. Hook sets state: `setSessions(result)`, `setLoading(false)`
-10. Component re-renders with `{ sessions: [...], loading: false, error: null }`
+10. Component re-renders with both profile data and sessions
 11. Component renders `SessionList` component with sessions data
+
+**Key insight:** `useProfile` is the bridge. It fetches the profile from the backend and writes it into context. Sibling hooks (`useSessions`, `useAppointments`) read `profile.id` from context, ensuring they fetch the correct data for the logged-in player.
 
 ---
 

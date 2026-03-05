@@ -177,7 +177,7 @@ Three sources of state — no global state library:
 
 ## §14. Async Hook Shape
 
-All hooks that fetch data return a consistent shape to simplify component code:
+Most hooks that fetch data return a consistent shape to simplify component code:
 
 ```ts
 {
@@ -187,14 +187,21 @@ All hooks that fetch data return a consistent shape to simplify component code:
 }
 ```
 
-**Example:**
+**Exception: hooks that write to context.** Some hooks (like `useProfile`) fetch data and write it to a shared context instead of returning it directly:
+
 ```ts
-const { profile, loading, error } = useProfile();
+// useProfile writes to context, does not return profile
+const { loading, error } = useProfile();
+
+// The resolved profile is read from context, not from the hook return value
+const { profile } = usePlayerContext();
 
 if (loading) return <Spinner />;
 if (error) return <ErrorAlert message={error} />;
 return <ProfileCard profile={profile!} />;
 ```
+
+**Why this pattern?** Hooks like `useSessions` and `useAppointments` need the `profile.id` to fetch their data. By having `useProfile` write the resolved profile into a shared context, sibling hooks can read it without needing to re-fetch or wait for the parent component to pass it down as a prop.
 
 ### Cancelled Flag Pattern
 
@@ -265,14 +272,12 @@ export function createPlayerWrapper({
 }: {
   email?: string;
   profileId?: string;
-} = {}) {
-  return function Wrapper({ children }: { children: ReactNode }) {
-    return (
-      <PlayerProvider initialEmail={email} initialProfile={{ id: profileId, ... }}>
-        {children}
-      </PlayerProvider>
-    );
-  };
+} = {}): React.ReactElement {
+  return (
+    <PlayerProvider initialEmail={email} initialProfile={{ id: profileId, ... }}>
+      {children}
+    </PlayerProvider>
+  );
 }
 ```
 
