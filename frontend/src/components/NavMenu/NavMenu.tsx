@@ -7,16 +7,19 @@ const LINKS = [
   { to: '/profile', label: 'Profile' },
 ] as const;
 
+const BASE =
+  'relative px-8 py-2 text-sm font-medium rounded-full transition-all duration-200 ease-in-out';
+const ACTIVE = `${BASE} bg-white/15 text-white scale-105 shadow-sm`;
+const INACTIVE = `${BASE} text-white/60 hover:text-white hover:bg-white/10 hover:scale-105`;
+
 function navClass({ isActive }: { isActive: boolean }): string {
-  return isActive
-    ? 'text-sm font-semibold text-white border-b-2 border-toca-purple pb-0.5'
-    : 'text-sm font-medium text-white/60 hover:text-white transition-colors';
+  return isActive ? ACTIVE : INACTIVE;
 }
 
 export function NavMenu(): ReactElement {
   return (
     <nav aria-label="Main navigation">
-      <ul className="flex items-center gap-6">
+      <ul className="flex items-center gap-2">
         {LINKS.map(({ to, label }) => (
           <li key={to}>
             <NavLink to={to} end={to === '/'} className={navClass}>

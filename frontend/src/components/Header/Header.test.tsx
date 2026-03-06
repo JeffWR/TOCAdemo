@@ -29,9 +29,9 @@ function renderHeader(initialProfile: Profile | null = null): void {
 }
 
 describe('Header', () => {
-  it('renders the TOCA brand name', () => {
+  it('renders the TOCA logo', () => {
     renderHeader();
-    expect(screen.getByText('TOCA')).toBeDefined();
+    expect(screen.getByRole('img', { name: /toca football/i })).toBeDefined();
   });
 
   it('renders the nav menu when logged in', () => {

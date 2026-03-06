@@ -21,7 +21,7 @@ function renderLayout(): void {
 describe('Layout', () => {
   it('renders the Header inside the layout', () => {
     renderLayout();
-    expect(screen.getByText('TOCA')).toBeDefined();
+    expect(screen.getByRole('img', { name: /toca football/i })).toBeDefined();
   });
 
   it('renders child route content inside a main element', () => {

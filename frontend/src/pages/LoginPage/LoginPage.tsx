@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayerContext } from '../../context/PlayerContext';
+import tocaLogo from '../../assets/toca-logo.svg';
 
 // RFC 5322-simplified regex — catches obvious non-emails before the API call.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,14 +29,16 @@ export default function LoginPage(): ReactElement {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-toca-navy">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-10 shadow-2xl">
-        <div className="mb-8 text-center">
-          <span className="font-poppins text-3xl font-bold tracking-widest text-toca-navy">
-            TOCA
-          </span>
-          <p className="mt-1 text-sm font-medium text-toca-purple">Player Portal</p>
+    // fixed + inset-0 locks the background to the viewport — no overscroll bleed
+    <div className="fixed inset-0 overflow-auto bg-gradient-to-br from-[#020d6b] via-toca-navy to-[#120e90] flex items-center justify-center p-6">
+      <div className="w-full max-w-md rounded-3xl bg-white p-12 shadow-2xl">
+        <div className="mb-10 flex flex-col items-center gap-3">
+          <img src={tocaLogo} alt="TOCA Football" className="h-12 w-auto" />
+          <p className="text-xs font-semibold uppercase tracking-widest text-toca-purple">
+            Player Portal
+          </p>
         </div>
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <div className="flex flex-col gap-1.5">
             <label
@@ -55,7 +58,7 @@ export default function LoginPage(): ReactElement {
                 setFormatError(null);
               }}
               placeholder="you@example.com"
-              className="rounded-lg border border-gray-200 px-4 py-3 text-sm text-toca-navy placeholder-gray-300 focus:border-toca-navy focus:outline-none focus:ring-1 focus:ring-toca-navy"
+              className="rounded-xl border border-gray-200 px-4 py-3.5 text-sm text-toca-navy placeholder-gray-300 focus:border-toca-navy focus:outline-none focus:ring-1 focus:ring-toca-navy"
             />
             {formatError !== null && (
               <p role="alert" className="text-xs text-red-500">
@@ -63,10 +66,11 @@ export default function LoginPage(): ReactElement {
               </p>
             )}
           </div>
+
           <button
             type="submit"
             disabled={emailInput.trim() === ''}
-            className="rounded-lg bg-toca-navy py-3 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-toca-navy/90 disabled:cursor-not-allowed disabled:opacity-40"
+            className="mt-1 rounded-xl bg-toca-navy py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-toca-navy/90 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Sign in
           </button>
