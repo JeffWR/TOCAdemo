@@ -19,13 +19,15 @@ export default function HomePage(): ReactElement {
   if (error !== null) return <ErrorMessage message={error} />;
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-12">
       <section>
-        <h2 className="mb-4 text-lg font-bold text-gray-900">Training Sessions</h2>
+        <h2 className="font-poppins mb-5 text-xl font-bold text-toca-navy">Training Sessions</h2>
         <SessionList sessions={sessions} />
       </section>
       <section>
-        <h2 className="mb-4 text-lg font-bold text-gray-900">Upcoming Appointments</h2>
+        <h2 className="font-poppins mb-5 text-xl font-bold text-toca-navy">
+          Upcoming Appointments
+        </h2>
         <AppointmentList appointments={appointments} />
       </section>
     </div>

@@ -17,13 +17,13 @@ export default function SessionDetailPage(): ReactElement {
   return (
     <section>
       <Link
-        to="/sessions"
-        className="mb-6 inline-block text-sm text-blue-600 hover:underline"
+        to="/"
+        className="mb-6 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-toca-navy/50 hover:text-toca-navy transition-colors"
       >
-        ← Back to sessions
+        ← Dashboard
       </Link>
-      <h1 className="mb-1 text-xl font-bold text-gray-900">{session.trainerName}</h1>
-      <p className="mb-6 text-sm text-gray-500">{formatDate(session.startTime)}</p>
+      <h1 className="font-poppins mb-1 text-2xl font-bold text-toca-navy">{session.trainerName}</h1>
+      <p className="mb-8 text-sm text-gray-400">{formatDate(session.startTime)}</p>
       <div className="flex flex-wrap gap-3">
         <StatBadge label="Score" value={session.score} />
         <StatBadge label="Goals" value={session.numberOfGoals} />

@@ -7,9 +7,11 @@ import { formatDate } from '../../utils/formatters';
 
 function Row({ label, value }: { label: string; value: string }): ReactElement {
   return (
-    <div className="flex flex-col gap-0.5 py-3 border-b border-gray-100 last:border-0">
-      <span className="text-xs font-medium text-gray-500">{label}</span>
-      <span className="text-sm text-gray-900">{value}</span>
+    <div className="flex flex-col gap-0.5 py-4 border-b border-toca-navy/8 last:border-0">
+      <span className="text-[10px] font-semibold uppercase tracking-wider text-toca-navy/50">
+        {label}
+      </span>
+      <span className="text-sm font-medium text-toca-navy">{value}</span>
     </div>
   );
 }
@@ -24,8 +26,8 @@ export default function ProfilePage(): ReactElement {
 
   return (
     <div className="max-w-md">
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">Profile</h1>
-      <div className="rounded-xl border border-gray-200 bg-white px-6 py-2 shadow-sm">
+      <h1 className="font-poppins mb-8 text-3xl font-bold text-toca-navy">Profile</h1>
+      <div className="rounded-xl border border-toca-navy/10 bg-white px-6 py-2 shadow-sm">
         <Row label="Name" value={`${profile.firstName} ${profile.lastName}`} />
         <Row label="Email" value={profile.email} />
         <Row label="Phone" value={profile.phone} />

@@ -13,32 +13,40 @@ export default function LoginPage(): ReactElement {
     const trimmed = emailInput.trim();
     if (trimmed === '') return;
     setEmail(trimmed);
-    void navigate('/sessions');
+    void navigate('/');
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-sm rounded-xl bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-2xl font-bold text-blue-700">TOCA Player Portal</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="text-sm font-medium text-gray-700">
-              Email
+    <div className="flex min-h-screen items-center justify-center bg-toca-navy">
+      <div className="w-full max-w-sm rounded-2xl bg-white p-10 shadow-2xl">
+        <div className="mb-8 text-center">
+          <span className="font-poppins text-3xl font-bold tracking-widest text-toca-navy">
+            TOCA
+          </span>
+          <p className="mt-1 text-sm font-medium text-toca-purple">Player Portal</p>
+        </div>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="email"
+              className="text-xs font-semibold uppercase tracking-wider text-toca-navy/60"
+            >
+              Email address
             </label>
             <input
               id="email"
               type="email"
               autoComplete="email"
               value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
+              onChange={e => setEmailInput(e.target.value)}
               placeholder="you@example.com"
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="rounded-lg border border-gray-200 px-4 py-3 text-sm text-toca-navy placeholder-gray-300 focus:border-toca-navy focus:outline-none focus:ring-1 focus:ring-toca-navy"
             />
           </div>
           <button
             type="submit"
             disabled={emailInput.trim() === ''}
-            className="rounded-md bg-blue-600 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="rounded-lg bg-toca-navy py-3 text-xs font-bold uppercase tracking-widest text-white transition-colors hover:bg-toca-navy/90 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Sign in
           </button>

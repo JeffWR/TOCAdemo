@@ -10,7 +10,7 @@ export function LoadingSpinner({ label = 'Loading' }: LoadingSpinnerProps): Reac
       <div
         data-testid="spinner-visual"
         aria-hidden="true"
-        className="animate-spin h-8 w-8 rounded-full border-4 border-gray-200 border-t-blue-600"
+        className="animate-spin h-8 w-8 rounded-full border-4 border-toca-bg border-t-toca-navy"
       />
     </div>
   );

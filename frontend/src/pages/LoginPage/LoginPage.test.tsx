@@ -11,7 +11,7 @@ function renderLoginPage(): void {
       <PlayerProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/sessions" element={<p>Sessions page</p>} />
+          <Route path="/" element={<p>Home page</p>} />
         </Routes>
       </PlayerProvider>
     </MemoryRouter>,
@@ -35,18 +35,18 @@ describe('LoginPage', () => {
     expect(button.disabled).toBe(true);
   });
 
-  it('navigates to /sessions after entering an email and submitting', async () => {
+  it('navigates to / after entering an email and submitting', async () => {
     const user = userEvent.setup();
     renderLoginPage();
     await user.type(screen.getByLabelText(/email/i), 'player@example.com');
     await user.click(screen.getByRole('button', { name: /sign in/i }));
-    expect(screen.getByText('Sessions page')).toBeDefined();
+    expect(screen.getByText('Home page')).toBeDefined();
   });
 
   it('does not navigate if the email input is blank', async () => {
     const user = userEvent.setup();
     renderLoginPage();
     await user.click(screen.getByRole('button', { name: /sign in/i }));
-    expect(screen.queryByText('Sessions page')).toBeNull();
+    expect(screen.queryByText('Home page')).toBeNull();
   });
 });

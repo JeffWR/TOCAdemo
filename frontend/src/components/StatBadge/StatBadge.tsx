@@ -9,10 +9,17 @@ export function StatBadge({ label, value }: StatBadgeProps): ReactElement {
   return (
     <div
       aria-label={`${label}: ${String(value)}`}
-      className="flex flex-col items-center rounded-lg bg-gray-50 px-3 py-2"
+      className="flex flex-col items-center rounded-lg bg-white px-4 py-3 shadow-sm"
     >
-      <span className="text-xs font-medium text-gray-500" aria-hidden="true">{label}</span>
-      <span className="text-sm font-bold text-gray-900" aria-hidden="true">{value}</span>
+      <span
+        className="text-[10px] font-semibold uppercase tracking-wider text-toca-navy/50"
+        aria-hidden="true"
+      >
+        {label}
+      </span>
+      <span className="mt-0.5 text-base font-bold text-toca-navy" aria-hidden="true">
+        {value}
+      </span>
     </div>
   );
 }

@@ -17,19 +17,19 @@ export function Header({ onLogout }: HeaderProps): ReactElement {
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <span className="text-xl font-bold text-blue-700 tracking-wide">TOCA</span>
+    <header className="bg-toca-navy px-6 py-4">
+      <div className="mx-auto flex max-w-4xl items-center justify-between">
+        <span className="font-poppins text-xl font-bold tracking-widest text-white">TOCA</span>
         {email !== null && <NavMenu />}
         <div className="flex items-center gap-4">
           {profile !== null && (
-            <span className="text-sm text-gray-600">Hi, {profile.firstName}</span>
+            <span className="text-sm text-white/70">Hi, {profile.firstName}</span>
           )}
           {email !== null && (
             <button
               type="button"
               onClick={handleLogout}
-              className="rounded-md bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-200 transition-colors"
+              className="rounded border border-white/40 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/90 transition-colors hover:bg-white hover:text-toca-navy"
             >
               Log out
             </button>

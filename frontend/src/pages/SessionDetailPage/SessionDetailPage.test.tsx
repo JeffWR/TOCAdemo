@@ -63,18 +63,18 @@ describe('SessionDetailPage', () => {
   it('renders all key stats', () => {
     vi.mocked(useSession).mockReturnValue({ session, loading: false, error: null });
     renderPage();
-    expect(screen.getByText('87')).toBeDefined();   // score
-    expect(screen.getByText('12')).toBeDefined();   // goals
-    expect(screen.getByText('15')).toBeDefined();   // streak
-    expect(screen.getByText('200')).toBeDefined();  // balls
-    expect(screen.getByText('3.4')).toBeDefined();  // avg speed
-    expect(screen.getByText('6')).toBeDefined();    // exercises
+    expect(screen.getByText('87')).toBeDefined(); // score
+    expect(screen.getByText('12')).toBeDefined(); // goals
+    expect(screen.getByText('15')).toBeDefined(); // streak
+    expect(screen.getByText('200')).toBeDefined(); // balls
+    expect(screen.getByText('3.4')).toBeDefined(); // avg speed
+    expect(screen.getByText('6')).toBeDefined(); // exercises
   });
 
-  it('renders a back link to /sessions', () => {
+  it('renders a back link to /', () => {
     vi.mocked(useSession).mockReturnValue({ session, loading: false, error: null });
     renderPage();
-    const backLink = screen.getByRole('link', { name: /back/i });
-    expect(backLink.getAttribute('href')).toBe('/sessions');
+    const backLink = screen.getByRole('link', { name: /dashboard/i });
+    expect(backLink.getAttribute('href')).toBe('/');
   });
 });

@@ -9,8 +9,8 @@ const LINKS = [
 
 function navClass({ isActive }: { isActive: boolean }): string {
   return isActive
-    ? 'text-sm font-semibold text-blue-700 border-b-2 border-blue-700 pb-0.5'
-    : 'text-sm font-medium text-gray-600 hover:text-blue-700 transition-colors';
+    ? 'text-sm font-semibold text-white border-b-2 border-toca-purple pb-0.5'
+    : 'text-sm font-medium text-white/60 hover:text-white transition-colors';
 }
 
 export function NavMenu(): ReactElement {
