@@ -20,7 +20,7 @@ export default defineConfig({
       provider: 'v8',
       reportsDirectory: './coverage',
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['src/test/**', 'src/main.tsx'],
+      exclude: ['src/test/**', 'src/main.tsx', 'src/types/**'],
       thresholds: {
         lines: 80,
         functions: 80,

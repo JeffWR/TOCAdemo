@@ -3,15 +3,26 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayerContext } from '../../context/PlayerContext';
 
+// RFC 5322-simplified regex — catches obvious non-emails before the API call.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function LoginPage(): ReactElement {
   const { setEmail } = usePlayerContext();
   const navigate = useNavigate();
   const [emailInput, setEmailInput] = useState('');
+  const [formatError, setFormatError] = useState<string | null>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     const trimmed = emailInput.trim();
     if (trimmed === '') return;
+
+    if (!EMAIL_RE.test(trimmed)) {
+      setFormatError('Please enter a valid email address');
+      return;
+    }
+
+    setFormatError(null);
     setEmail(trimmed);
     void navigate('/');
   }
@@ -35,13 +46,22 @@ export default function LoginPage(): ReactElement {
             </label>
             <input
               id="email"
-              type="email"
+              type="text"
+              inputMode="email"
               autoComplete="email"
               value={emailInput}
-              onChange={e => setEmailInput(e.target.value)}
+              onChange={e => {
+                setEmailInput(e.target.value);
+                setFormatError(null);
+              }}
               placeholder="you@example.com"
               className="rounded-lg border border-gray-200 px-4 py-3 text-sm text-toca-navy placeholder-gray-300 focus:border-toca-navy focus:outline-none focus:ring-1 focus:ring-toca-navy"
             />
+            {formatError !== null && (
+              <p role="alert" className="text-xs text-red-500">
+                {formatError}
+              </p>
+            )}
           </div>
           <button
             type="submit"

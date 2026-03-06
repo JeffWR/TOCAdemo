@@ -28,11 +28,12 @@ export function useProfile(): UseProfileResult {
 
     let cancelled = false;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- standard async fetch pattern; React 18+ batches effect-triggered state updates
     setLoading(true);
     setError(null);
 
     getProfileByEmail(email)
-      .then((data) => {
+      .then(data => {
         if (!cancelled) {
           setProfile(data); // write resolved profile into context for downstream hooks
         }

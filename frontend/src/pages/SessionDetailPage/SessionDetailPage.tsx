@@ -4,7 +4,7 @@ import { ErrorMessage } from '../../components/ErrorMessage';
 import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { StatBadge } from '../../components/StatBadge';
 import { useSession } from '../../hooks/useSession';
-import { formatDate } from '../../utils/formatters';
+import { formatDate, formatDuration } from '../../utils/formatters';
 
 export default function SessionDetailPage(): ReactElement {
   const { id = '' } = useParams<{ id: string }>();
@@ -31,6 +31,7 @@ export default function SessionDetailPage(): ReactElement {
         <StatBadge label="Balls" value={session.numberOfBalls} />
         <StatBadge label="Avg Speed" value={session.avgSpeedOfPlay} />
         <StatBadge label="Exercises" value={session.numberOfExercises} />
+        <StatBadge label="Duration" value={formatDuration(session.startTime, session.endTime)} />
       </div>
     </section>
   );

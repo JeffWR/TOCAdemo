@@ -8,6 +8,8 @@ import { useProfile } from '../../hooks/useProfile';
 import { useSessions } from '../../hooks/useSessions';
 
 export default function HomePage(): ReactElement {
+  // useProfile is called for its side effect: it fetches the profile and writes it
+  // into PlayerContext. useSessions and useAppointments depend on that profile.id.
   const { loading: profileLoading, error: profileError } = useProfile();
   const { sessions, loading: sessionsLoading, error: sessionsError } = useSessions();
   const { appointments, loading: apptLoading, error: apptError } = useAppointments();

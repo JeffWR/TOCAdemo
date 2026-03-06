@@ -64,6 +64,18 @@ describe('getSessionsByPlayer', () => {
 });
 
 describe('getSessionById', () => {
+  it('returns 404 when the id param is not a string (defensive typeof guard)', async () => {
+    // @types/express@5 types req.params as string | string[]; this guard is unreachable
+    // at runtime but must be covered to satisfy the 100% handler threshold.
+    const req = { params: { id: ['a', 'b'] } } as unknown as Request;
+    const res = mockRes();
+
+    await getSessionById(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith({ success: false, error: 'Session not found' });
+  });
+
   it('returns 404 when session is not found', async () => {
     vi.mocked(sessionRepository.findById).mockReturnValue(undefined);
     const req = { params: { id: 'non-existent' } } as unknown as Request;

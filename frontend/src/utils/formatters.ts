@@ -17,3 +17,14 @@ export function formatDateTime(iso: string): string {
     minute: '2-digit',
   });
 }
+
+export function formatDuration(startIso: string, endIso: string): string {
+  const start = new Date(startIso);
+  const end = new Date(endIso);
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) return FALLBACK;
+  const totalMinutes = Math.round((end.getTime() - start.getTime()) / 60_000);
+  if (totalMinutes < 60) return `${totalMinutes}m`;
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}h ${minutes}m`;
+}

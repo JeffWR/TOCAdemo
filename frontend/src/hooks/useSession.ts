@@ -22,6 +22,7 @@ export function useSession(id: string): UseSessionResult {
 
     let cancelled = false;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- standard async fetch pattern; React 18+ batches effect-triggered state updates
     setLoading(true);
     setError(null);
 

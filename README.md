@@ -5,6 +5,32 @@ Built as a single-page application (SPA) with a React frontend and a Node.js bac
 
 ---
 
+## Architecture at a Glance
+
+```
+Frontend                          Backend
+────────────────────────────────  ──────────────────────────────────
+LoginPage                         routes/
+  → sets email in PlayerContext     → handlers/   (validate input)
+  → useProfile fetches profile        → repositories/  (read JSON)
+  → profile.id drives all hooks           → sampledata/*.json
+
+Data flow per page:
+  PlayerContext (email + profile)
+    └── useProfile      → GET /api/profiles?email=...   → setProfile()
+    └── useSessions     → GET /api/sessions?playerId=...
+    └── useAppointments → GET /api/appointments?playerId=...
+
+Key design decisions:
+  - email is stored instantly on login; profile is fetched async
+  - useSessions / useAppointments wait for profile.id before fetching
+  - All API responses use { success, data } | { success, error } envelope
+  - Auth state lives in React Context only — never localStorage
+  - Data source is sampledata/*.json — no database
+```
+
+---
+
 ## Features & Requirements
 
 - **Sign-in screen** — player enters their email address (auth simulation, not real auth)

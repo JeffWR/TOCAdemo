@@ -1,3 +1,7 @@
+// These interfaces mirror frontend/src/types/index.ts exactly.
+// A shared package would eliminate the duplication; omitted here to keep
+// the monorepo setup simple for a demo project.
+
 export interface Profile {
   id: string;
   email: string;

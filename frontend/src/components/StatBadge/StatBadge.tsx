@@ -9,7 +9,7 @@ export function StatBadge({ label, value }: StatBadgeProps): ReactElement {
   return (
     <div
       aria-label={`${label}: ${String(value)}`}
-      className="flex flex-col items-center rounded-lg bg-white px-4 py-3 shadow-sm"
+      className="flex flex-col items-center rounded-lg bg-toca-bg px-4 py-3 shadow-sm"
     >
       <span
         className="text-[10px] font-semibold uppercase tracking-wider text-toca-navy/50"

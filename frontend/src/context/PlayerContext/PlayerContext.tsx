@@ -60,6 +60,7 @@ export function PlayerProvider({
  * Throws a descriptive error if called outside <PlayerProvider> — this is intentional.
  * A missing provider is a programmer error, not a runtime edge case.
  */
+// eslint-disable-next-line react-refresh/only-export-components -- context files always co-locate the provider and its hook
 export function usePlayerContext(): PlayerContextValue {
   const ctx = useContext(PlayerContext);
   if (ctx === null) {

@@ -14,17 +14,27 @@ import { useSessions } from '../../hooks/useSessions';
 
 const sessions: TrainingSession[] = [
   {
-    id: 's1', playerId: 'p1', trainerName: 'Coach Alex',
-    startTime: '2024-03-01T09:00:00Z', endTime: '2024-03-01T10:00:00Z',
-    numberOfBalls: 200, bestStreak: 15, numberOfGoals: 12,
-    score: 87, avgSpeedOfPlay: 3.4, numberOfExercises: 6,
+    id: 's1',
+    playerId: 'p1',
+    trainerName: 'Coach Alex',
+    startTime: '2024-03-01T09:00:00Z',
+    endTime: '2024-03-01T10:00:00Z',
+    numberOfBalls: 200,
+    bestStreak: 15,
+    numberOfGoals: 12,
+    score: 87,
+    avgSpeedOfPlay: 3.4,
+    numberOfExercises: 6,
   },
 ];
 
 const appointments: Appointment[] = [
   {
-    id: 'a1', playerId: 'p1', trainerName: 'Coach Sam',
-    startTime: '2099-04-10T14:00:00Z', endTime: '2099-04-10T15:00:00Z',
+    id: 'a1',
+    playerId: 'p1',
+    trainerName: 'Coach Sam',
+    startTime: '2099-04-10T14:00:00Z',
+    endTime: '2099-04-10T15:00:00Z',
   },
 ];
 

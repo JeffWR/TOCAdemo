@@ -13,7 +13,7 @@ export function SessionList({ sessions }: SessionListProps): ReactElement {
 
   return (
     <ul className="flex flex-col gap-3">
-      {sessions.map((session) => (
+      {sessions.map(session => (
         <li key={session.id}>
           <SessionCard session={session} />
         </li>

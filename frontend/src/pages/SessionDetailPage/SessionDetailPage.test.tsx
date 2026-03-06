@@ -77,4 +77,11 @@ describe('SessionDetailPage', () => {
     const backLink = screen.getByRole('link', { name: /dashboard/i });
     expect(backLink.getAttribute('href')).toBe('/');
   });
+
+  it('renders a Duration stat badge', () => {
+    vi.mocked(useSession).mockReturnValue({ session, loading: false, error: null });
+    renderPage();
+    expect(screen.getByLabelText(/duration/i)).toBeDefined();
+    expect(screen.getByText('1h 0m')).toBeDefined();
+  });
 });

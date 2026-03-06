@@ -13,7 +13,7 @@ export function AppointmentList({ appointments }: AppointmentListProps): ReactEl
 
   return (
     <ul className="flex flex-col gap-3">
-      {appointments.map((appointment) => (
+      {appointments.map(appointment => (
         <li key={appointment.id}>
           <AppointmentCard appointment={appointment} />
         </li>

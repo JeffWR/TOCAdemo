@@ -49,4 +49,13 @@ describe('LoginPage', () => {
     await user.click(screen.getByRole('button', { name: /sign in/i }));
     expect(screen.queryByText('Home page')).toBeNull();
   });
+
+  it('shows an error for an invalid email format', async () => {
+    const user = userEvent.setup();
+    renderLoginPage();
+    await user.type(screen.getByLabelText(/email/i), 'not-an-email');
+    await user.click(screen.getByRole('button', { name: /sign in/i }));
+    expect(screen.getByRole('alert')).toBeDefined();
+    expect(screen.queryByText('Home page')).toBeNull();
+  });
 });
