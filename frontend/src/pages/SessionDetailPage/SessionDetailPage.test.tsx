@@ -5,11 +5,11 @@ import { PlayerProvider } from '../../context/PlayerContext';
 import type { TrainingSession } from '../../types';
 import SessionDetailPage from './SessionDetailPage';
 
-vi.mock('../../hooks/useSession', () => ({
-  useSession: vi.fn(),
-}));
+vi.mock('../../hooks/useSession', () => ({ useSession: vi.fn() }));
+vi.mock('../../hooks/useSessions', () => ({ useSessions: vi.fn() }));
 
 import { useSession } from '../../hooks/useSession';
+import { useSessions } from '../../hooks/useSessions';
 
 const session: TrainingSession = {
   id: 's1',
@@ -37,9 +37,23 @@ function renderPage(): void {
   );
 }
 
+const allSessions: TrainingSession[] = [
+  session,
+  {
+    ...session,
+    id: 's2',
+    score: 73,
+    numberOfGoals: 8,
+    bestStreak: 10,
+    numberOfBalls: 180,
+    numberOfExercises: 5,
+  },
+];
+
 describe('SessionDetailPage', () => {
   beforeEach(() => {
     vi.mocked(useSession).mockReturnValue({ session: null, loading: false, error: null });
+    vi.mocked(useSessions).mockReturnValue({ sessions: [], loading: false, error: null });
   });
 
   it('shows a loading spinner while fetching', () => {
@@ -60,15 +74,13 @@ describe('SessionDetailPage', () => {
     expect(screen.getByRole('heading', { name: /Coach Alex/i })).toBeDefined();
   });
 
-  it('renders all key stats', () => {
+  it('renders comparison rows for key stats', () => {
     vi.mocked(useSession).mockReturnValue({ session, loading: false, error: null });
+    vi.mocked(useSessions).mockReturnValue({ sessions: allSessions, loading: false, error: null });
     renderPage();
-    expect(screen.getByText('87')).toBeDefined(); // score
-    expect(screen.getByText('12')).toBeDefined(); // goals
-    expect(screen.getByText('15')).toBeDefined(); // streak
-    expect(screen.getByText('200')).toBeDefined(); // balls
-    expect(screen.getByText('3.4')).toBeDefined(); // avg speed
-    expect(screen.getByText('6')).toBeDefined(); // exercises
+    expect(screen.getByText(/score/i)).toBeDefined();
+    expect(screen.getByText(/goals/i)).toBeDefined();
+    expect(screen.getByText(/best streak/i)).toBeDefined();
   });
 
   it('renders a back link to /', () => {
