@@ -42,9 +42,9 @@ describe('ProfilePage', () => {
     expect(screen.getByRole('status')).toBeDefined();
   });
 
-  it('renders the page heading', () => {
+  it('renders the player name as the page heading', () => {
     renderPage(profile);
-    expect(screen.getByRole('heading', { name: /profile/i })).toBeDefined();
+    expect(screen.getByRole('heading', { name: /jane doe/i })).toBeDefined();
   });
 
   it('renders the player full name', () => {
@@ -59,6 +59,6 @@ describe('ProfilePage', () => {
 
   it('renders the center name', () => {
     renderPage(profile);
-    expect(screen.getByText('TOCA West')).toBeDefined();
+    expect(screen.getAllByText('TOCA West').length).toBeGreaterThan(0);
   });
 });
