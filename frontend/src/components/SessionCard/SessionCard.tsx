@@ -13,15 +13,15 @@ export function SessionCard({ session }: SessionCardProps): ReactElement {
     <Link
       to={`/sessions/${session.id}`}
       aria-label={`Training session with ${session.trainerName} on ${formatDate(session.startTime)}`}
-      className="group block rounded-xl border border-toca-navy/10 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-toca-navy/30"
+      className="group block rounded-xl border border-toca-navy/10 bg-white px-5 py-4 shadow-sm transition-all hover:shadow-md hover:border-toca-navy/30"
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         <span className="font-poppins text-sm font-semibold text-toca-navy">
           {session.trainerName}
         </span>
         <span className="text-xs font-medium text-gray-400">{formatDate(session.startTime)}</span>
       </div>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="flex gap-2">
         <StatBadge label="Score" value={session.score} />
         <StatBadge label="Goals" value={session.numberOfGoals} />
         <StatBadge label="Best Streak" value={session.bestStreak} />
