@@ -39,23 +39,24 @@ export default function SessionDetailPage(): ReactElement {
       </Link>
 
       <h1 className="font-poppins mb-1 text-2xl font-bold text-toca-navy">{session.trainerName}</h1>
-      <p className="mb-6 text-sm text-gray-400">{formatDate(session.startTime)}</p>
+      <p className="mb-4 text-sm text-gray-400">{formatDate(session.startTime)}</p>
 
-      <div className="mb-8 flex flex-wrap gap-3">
+      <div className="mb-5 flex flex-wrap gap-3">
         <StatBadge label="Duration" value={formatDuration(session.startTime, session.endTime)} />
         <StatBadge label="Avg Speed" value={session.avgSpeedOfPlay} />
         <StatBadge label="Balls" value={session.numberOfBalls} />
       </div>
 
-      <h2 className="font-poppins mb-4 text-lg font-bold text-toca-navy">
-        vs Your Average
-      </h2>
       <div className="rounded-xl bg-white p-6 shadow-sm space-y-6">
         <ComparisonRow label="Score" thisValue={session.score} avgValue={avg.score} />
         <ComparisonRow label="Goals" thisValue={session.numberOfGoals} avgValue={avg.goals} />
         <ComparisonRow label="Best Streak" thisValue={session.bestStreak} avgValue={avg.streak} />
         <ComparisonRow label="Balls" thisValue={session.numberOfBalls} avgValue={avg.balls} />
-        <ComparisonRow label="Exercises" thisValue={session.numberOfExercises} avgValue={avg.exercises} />
+        <ComparisonRow
+          label="Exercises"
+          thisValue={session.numberOfExercises}
+          avgValue={avg.exercises}
+        />
       </div>
     </section>
   );
