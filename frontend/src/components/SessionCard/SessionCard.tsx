@@ -21,7 +21,7 @@ export function SessionCard({ session }: SessionCardProps): ReactElement {
         </span>
         <span className="text-xs font-medium text-gray-400">{formatDate(session.startTime)}</span>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-4 gap-2">
         <StatBadge label="Score" value={session.score} />
         <StatBadge label="Goals" value={session.numberOfGoals} />
         <StatBadge label="Best Streak" value={session.bestStreak} />
