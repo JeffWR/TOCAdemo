@@ -1,8 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { PlayerProvider } from '../../context/PlayerContext';
 import { Layout } from './Layout';
+
+vi.mock('../../hooks/useProfile', () => ({ useProfile: () => ({ loading: false, error: null }) }));
 
 function renderLayout(): void {
   render(

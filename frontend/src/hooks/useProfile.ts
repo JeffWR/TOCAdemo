@@ -18,13 +18,13 @@ interface UseProfileResult {
  * Callers read the profile value directly from usePlayerContext().profile.
  */
 export function useProfile(): UseProfileResult {
-  const { email, setProfile } = usePlayerContext();
-  // Start loading immediately if email is already in context on mount.
-  const [loading, setLoading] = useState<boolean>(email !== null);
+  const { email, profile, setProfile } = usePlayerContext();
+  // Skip the fetch if the profile is already resolved in context.
+  const [loading, setLoading] = useState<boolean>(email !== null && profile === null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (email === null) return;
+    if (email === null || profile !== null) return;
 
     let cancelled = false;
 
@@ -53,7 +53,7 @@ export function useProfile(): UseProfileResult {
     return () => {
       cancelled = true;
     };
-  }, [email, setProfile]);
+  }, [email, profile, setProfile]);
 
   return { loading, error };
 }
