@@ -13,7 +13,7 @@ export function SessionCard({ session }: SessionCardProps): ReactElement {
     <Link
       to={`/sessions/${session.id}`}
       aria-label={`Training session with ${session.trainerName} on ${formatDate(session.startTime)}`}
-      className="group block rounded-xl border border-toca-navy/10 bg-white p-5 shadow-sm transition-all hover:shadow-md hover:border-toca-navy/30"
+      className="group block rounded-xl border border-toca-navy/10 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-toca-navy/30"
     >
       <div className="flex items-center justify-between mb-4">
         <span className="font-poppins text-sm font-semibold text-toca-navy">
