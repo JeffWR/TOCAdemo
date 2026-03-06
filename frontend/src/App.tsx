@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { SESSION_EMAIL_KEY } from './context/PlayerContext';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -10,8 +11,9 @@ import ProfilePage from './pages/ProfilePage';
 import SessionDetailPage from './pages/SessionDetailPage';
 
 export function App(): ReactElement {
+  const savedEmail = sessionStorage.getItem(SESSION_EMAIL_KEY);
   return (
-    <PlayerProvider>
+    <PlayerProvider initialEmail={savedEmail}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute />}>

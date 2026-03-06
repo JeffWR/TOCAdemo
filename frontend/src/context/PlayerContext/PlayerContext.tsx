@@ -17,6 +17,10 @@ interface PlayerContextValue {
 
 // The raw context — null when accessed outside the provider.
 // Components should use usePlayerContext(), not this directly.
+// Key used to persist the logged-in email across page reloads.
+// Only the email is stored — no tokens or sensitive data.
+export const SESSION_EMAIL_KEY = 'toca_email';
+
 const PlayerContext = createContext<PlayerContextValue | null>(null);
 
 interface PlayerProviderProps {
@@ -36,6 +40,7 @@ export function PlayerProvider({
   const [profile, setProfileState] = useState<Profile | null>(initialProfile);
 
   const setEmail = useCallback((newEmail: string): void => {
+    sessionStorage.setItem(SESSION_EMAIL_KEY, newEmail);
     setEmailState(newEmail);
   }, []);
 
@@ -44,6 +49,7 @@ export function PlayerProvider({
   }, []);
 
   const logout = useCallback((): void => {
+    sessionStorage.removeItem(SESSION_EMAIL_KEY);
     setEmailState(null);
     setProfileState(null);
   }, []);
