@@ -12,7 +12,7 @@ export function SessionList({ sessions }: SessionListProps): ReactElement {
   }
 
   return (
-    <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
+    <ul className="flex flex-col gap-3">
       {sessions.map(session => (
         <li key={session.id}>
           <SessionCard session={session} />
