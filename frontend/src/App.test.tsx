@@ -13,22 +13,21 @@ describe('App routing', () => {
     expect(screen.getByRole('button', { name: /sign in/i })).toBeDefined();
   });
 
-  it('redirects unauthenticated user from /sessions to /login', () => {
+  it('redirects unauthenticated user from / to /login', () => {
     render(
-      <MemoryRouter initialEntries={['/sessions']}>
+      <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     );
     expect(screen.getByRole('button', { name: /sign in/i })).toBeDefined();
   });
 
-  it('redirects / to /sessions (which then redirects to /login when unauthenticated)', () => {
+  it('redirects unknown paths to / (then to /login when unauthenticated)', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
+      <MemoryRouter initialEntries={['/unknown-path']}>
         <App />
       </MemoryRouter>,
     );
-    // / → /sessions → /login (unauthenticated)
     expect(screen.getByRole('button', { name: /sign in/i })).toBeDefined();
   });
 });

@@ -1,6 +1,6 @@
 # Frontend Documentation
 
-**Last Updated:** 2026-03-05 (Chunk 2: UI components added)
+**Last Updated:** 2026-03-05 (Chunk 3: pages + routing added)
 **Stack:** React 19 · TypeScript 5 · Vite 7 · React Router 7
 **Data:** Service layer + custom hooks + React Context
 
@@ -65,20 +65,26 @@ All components live in their own folder following the Component Folder Pattern (
 | `AppointmentCard` | Single appointment row with "Upcoming" badge | `appointment: Appointment` |
 | `SessionList` | Maps a `TrainingSession[]` to `SessionCard` list; shows empty-state text | `sessions: TrainingSession[]` |
 | `AppointmentList` | Maps an `Appointment[]` to `AppointmentCard` list; shows empty-state text | `appointments: Appointment[]` |
-| `Header` | Top bar: TOCA brand + logged-in player first name + Log out button | `onLogout?: () => void` |
-| `Layout` | Wraps protected pages — renders `<Header>` above a `<main>` content area | `children: ReactNode` |
+| `NavMenu` | Horizontal nav links (Home · About TOCA · Profile) using `NavLink` with active styling | none |
+| `Header` | Top bar: TOCA brand + `NavMenu` (when logged in) + player first name + Log out button | none |
+| `Layout` | React Router layout route — renders `<Header>` above `<main>`; child routes render via `<Outlet>` | none |
+| `ProtectedRoute` | Guard route — redirects unauthenticated users to `/login`; renders `<Outlet>` when authenticated | none |
 <!-- END AUTO-GENERATED -->
 
 ### Composition hierarchy
 
 ```
-Layout
-├── Header           ← reads profile.firstName from PlayerContext
-└── <main>
-    ├── SessionList
-    │   └── SessionCard → StatBadge (score, goals, streak, exercises)
-    └── AppointmentList
-        └── AppointmentCard
+ProtectedRoute (guard — redirects to /login if unauthenticated)
+└── Layout
+    ├── Header           ← reads email + profile from PlayerContext
+    │   └── NavMenu      ← Home / About TOCA / Profile NavLinks
+    └── <main> (<Outlet />)
+        ├── HomePage
+        │   ├── SessionList → SessionCard → StatBadge (score, goals, streak, exercises)
+        │   └── AppointmentList → AppointmentCard
+        ├── SessionDetailPage → StatBadge (all 6 stats)
+        ├── AboutPage (static)
+        └── ProfilePage ← reads profile from PlayerContext
 ```
 
 ### MemoryRouter in tests
@@ -91,6 +97,35 @@ render(
     <SessionCard session={session} />
   </MemoryRouter>,
 );
+```
+
+---
+
+## Pages (src/pages/)
+
+All pages follow the Page Component pattern (§3): default export, thin — only compose hooks and components.
+
+<!-- AUTO-GENERATED from src/pages/** -->
+| Page | Route | Hooks Used | Description |
+|---|---|---|---|
+| `LoginPage` | `/login` | none | Email input form; calls `setEmail` + navigates to `/` on submit; public (no auth required) |
+| `HomePage` | `/` | `useProfile`, `useSessions`, `useAppointments` | Combined dashboard showing training sessions and upcoming appointments |
+| `SessionDetailPage` | `/sessions/:id` | `useSession(id)` | Full stats for a single training session (all 6 stat badges + trainer + date) |
+| `AboutPage` | `/about` | none | Static page describing the TOCA training platform |
+| `ProfilePage` | `/profile` | `useProfile` | Displays logged-in player's profile data (name, email, phone, DOB, gender, center, member since) |
+<!-- END AUTO-GENERATED -->
+
+### Route tree
+
+```
+/login                    ← LoginPage (public)
+/                         ← ProtectedRoute
+  /                       ←   Layout (Header + Outlet)
+    /                     ←     HomePage
+    /sessions/:id         ←     SessionDetailPage
+    /about                ←     AboutPage
+    /profile              ←     ProfilePage
+*                         ← Navigate to / (then redirected to /login if unauthenticated)
 ```
 
 ---
@@ -363,20 +398,19 @@ The `cancelled` flag pattern is simpler than `AbortController` for this use case
 
 1. User enters email on login page
 2. `handleLogin` calls `setEmail('alice@example.com')` → updates `PlayerContext.email`
-3. App navigates to `/sessions`
-4. `SessionListPage` calls `useProfile()` and `useSessions()`
-5. **useProfile hook:**
+3. App navigates to `/` (home)
+4. `ProtectedRoute` checks context — `email` is set → renders `<Outlet />`
+5. `HomePage` mounts; calls `useProfile()`, `useSessions()`, `useAppointments()`
+6. **useProfile hook:**
    - Reads `email` from context
    - Calls `profileService.getProfileByEmail('alice@example.com')`
    - On success, calls `setProfile(profileData)` → writes profile to context
-6. `useSessions()` waits for `profile` to appear in context, then:
-   - Reads `profile.id` from context
-   - Calls `sessionService.getSessionsByPlayer(profile.id)`
-7. Service calls `apiFetch('/sessions?playerId=...')`
-8. `apiFetch` calls backend → unwraps response → returns `TrainingSession[]`
-9. Hook sets state: `setSessions(result)`, `setLoading(false)`
-10. Component re-renders with both profile data and sessions
-11. Component renders `SessionList` component with sessions data
+7. `useSessions()` and `useAppointments()` wait for `profile` to appear in context, then:
+   - Read `profile.id` from context
+   - Call `sessionService.getSessionsByPlayer(profile.id)` and `appointmentService.getAppointmentsByPlayer(profile.id)`
+8. Each service calls `apiFetch(...)` → unwraps response envelope → returns typed data
+9. Hooks set state: `setLoading(false)`, `setSessions(result)`, `setAppointments(result)`
+10. `HomePage` re-renders with all data; renders `SessionList` and `AppointmentList`
 
 **Key insight:** `useProfile` is the bridge. It fetches the profile from the backend and writes it into context. Sibling hooks (`useSessions`, `useAppointments`) read `profile.id` from context, ensuring they fetch the correct data for the logged-in player.
 

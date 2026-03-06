@@ -34,6 +34,22 @@ describe('Header', () => {
     expect(screen.getByText('TOCA')).toBeDefined();
   });
 
+  it('renders the nav menu when logged in', () => {
+    renderHeader();
+    expect(screen.getByRole('navigation', { name: /main navigation/i })).toBeDefined();
+  });
+
+  it('does not render the nav menu when logged out', () => {
+    render(
+      <MemoryRouter>
+        <PlayerProvider>
+          <Header />
+        </PlayerProvider>
+      </MemoryRouter>,
+    );
+    expect(screen.queryByRole('navigation', { name: /main navigation/i })).toBeNull();
+  });
+
   it('renders the player first name when profile is loaded', () => {
     renderHeader(profile);
     expect(screen.getByText(/Jane/)).toBeDefined();

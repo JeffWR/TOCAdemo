@@ -3,10 +3,11 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PlayerProvider } from './context/PlayerContext';
-import AppointmentsPage from './pages/AppointmentsPage';
+import AboutPage from './pages/AboutPage';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
 import SessionDetailPage from './pages/SessionDetailPage';
-import SessionListPage from './pages/SessionListPage';
 
 export function App(): ReactElement {
   return (
@@ -15,12 +16,13 @@ export function App(): ReactElement {
         <Route path="/login" element={<LoginPage />} />
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
-            <Route path="/" element={<Navigate to="/sessions" replace />} />
-            <Route path="/sessions" element={<SessionListPage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/sessions/:id" element={<SessionDetailPage />} />
-            <Route path="/appointments" element={<AppointmentsPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Route>
         </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </PlayerProvider>
   );

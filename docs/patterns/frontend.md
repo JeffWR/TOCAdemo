@@ -132,19 +132,23 @@ export const PlayerContext = createContext<PlayerContextValue>({
 ## §11. Routing Pattern
 
 - **All routes** are defined in `src/App.tsx` — no route definitions elsewhere.
-- A layout route (`<Layout />`) wraps all protected pages.
-- Any protected page reads `PlayerContext`; if email is `null`, redirects to `/login`.
+- `<ProtectedRoute>` is a guard layout route: checks `email` from context, redirects to `/login` if `null`, renders `<Outlet />` otherwise.
+- `<Layout>` is a nested layout route: renders `<Header>` above a `<main>` containing `<Outlet />` for child pages.
+- Unknown paths redirect to `/` (which itself redirects to `/login` when unauthenticated).
 
 ```tsx
 // src/App.tsx
 <Routes>
   <Route path="/login" element={<LoginPage />} />
-  <Route element={<Layout />}>
-    <Route path="/" element={<Navigate to="/sessions" replace />} />
-    <Route path="/sessions" element={<SessionListPage />} />
-    <Route path="/sessions/:id" element={<SessionDetailPage />} />
-    <Route path="/appointments" element={<AppointmentsPage />} />
+  <Route element={<ProtectedRoute />}>
+    <Route element={<Layout />}>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/sessions/:id" element={<SessionDetailPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+    </Route>
   </Route>
+  <Route path="*" element={<Navigate to="/" replace />} />
 </Routes>
 ```
 
