@@ -59,44 +59,49 @@ TOCAdemo/
 
 ---
 
-## Getting Started
+## Running Locally
 
 ### Prerequisites
 
 - Node.js 22+
 - npm 10+
 
-### Install
+### 1. Install dependencies
 
 ```bash
-# Install frontend dependencies
 cd frontend && npm install
-
-# Install backend dependencies
 cd ../backend && npm install
 ```
 
-### Run (development)
+### 2. Start the servers
 
-Open two terminals:
+You need **two terminals running at the same time**:
 
 ```bash
-# Terminal 1 — backend (http://localhost:3001)
+# Terminal 1 — start the backend API (http://localhost:3001)
 cd backend && npm run dev
+```
 
-# Terminal 2 — frontend (http://localhost:5173)
+```bash
+# Terminal 2 — start the frontend (http://localhost:5173)
 cd frontend && npm run dev
 ```
 
-The Vite dev server proxies `/api/*` requests to the backend automatically.
+The Vite dev server automatically proxies all `/api/*` requests to the backend — no extra config needed.
 
-### Login
+### 3. Open the app
 
-Use any email from `sampledata/profiles.json`, for example:
+Go to **http://localhost:5173** in your browser.
+
+### 4. Log in
+
+Enter any email from `sampledata/profiles.json`. For example:
 
 ```
 sabrina.chen@example.com
 ```
+
+No password required — the app authenticates by email.
 
 ---
 
