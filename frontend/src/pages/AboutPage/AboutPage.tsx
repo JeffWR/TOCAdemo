@@ -91,7 +91,9 @@ export default function AboutPage(): ReactElement {
         className="inline-flex items-center gap-2 rounded-xl border border-toca-navy/20 bg-white px-5 py-3 text-sm font-semibold text-toca-navy shadow-sm transition-all duration-200 hover:border-toca-navy/40 hover:shadow-md"
       >
         Visit tocafootball.com
-        <span aria-hidden="true" className="text-toca-navy/40">&rarr;</span>
+        <span aria-hidden="true" className="text-toca-navy/40">
+          &rarr;
+        </span>
       </a>
     </div>
   );

@@ -20,7 +20,9 @@ function StatCard({ value, label }: { value: string; label: string }): ReactElem
   return (
     <div className="rounded-xl bg-white p-5 shadow-sm">
       <p className="font-poppins text-2xl font-bold text-toca-navy">{value}</p>
-      <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-toca-navy/50">{label}</p>
+      <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-toca-navy/50">
+        {label}
+      </p>
     </div>
   );
 }
@@ -28,7 +30,9 @@ function StatCard({ value, label }: { value: string; label: string }): ReactElem
 function Field({ label, value }: { label: string; value: string }): ReactElement {
   return (
     <div className="rounded-xl bg-white p-5 shadow-sm">
-      <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-toca-navy/50">{label}</p>
+      <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-toca-navy/50">
+        {label}
+      </p>
       <p className="text-sm font-medium text-toca-navy">{value}</p>
     </div>
   );
@@ -57,16 +61,54 @@ function ScoreChart({ sessions }: { sessions: TrainingSession[] }): ReactElement
       </div>
       <svg viewBox={`0 0 ${CHART_W} ${CHART_H}`} className="w-full">
         {[25, 50, 75].map(pct => (
-          <line key={pct} x1={0} y1={CHART_H - (pct / 100) * CHART_H} x2={CHART_W} y2={CHART_H - (pct / 100) * CHART_H} stroke="#051274" strokeWidth={0.5} strokeOpacity={0.06} />
+          <line
+            key={pct}
+            x1={0}
+            y1={CHART_H - (pct / 100) * CHART_H}
+            x2={CHART_W}
+            y2={CHART_H - (pct / 100) * CHART_H}
+            stroke="#051274"
+            strokeWidth={0.5}
+            strokeOpacity={0.06}
+          />
         ))}
         {data.map((s, i) => {
           const h = (s.score / 100) * CHART_H;
-          return <rect key={s.id} x={i * (barW + gap)} y={CHART_H - h} width={barW} height={h} rx={2} fill="#051274" fillOpacity={0.75} />;
+          return (
+            <rect
+              key={s.id}
+              x={i * (barW + gap)}
+              y={CHART_H - h}
+              width={barW}
+              height={h}
+              rx={2}
+              fill="#051274"
+              fillOpacity={0.75}
+            />
+          );
         })}
-        <line x1={0} y1={avgY} x2={CHART_W} y2={avgY} stroke="#aca1ff" strokeWidth={1.2} strokeDasharray="6 3" />
+        <line
+          x1={0}
+          y1={avgY}
+          x2={CHART_W}
+          y2={avgY}
+          stroke="#aca1ff"
+          strokeWidth={1.2}
+          strokeDasharray="6 3"
+        />
       </svg>
       <div className="mt-3 flex items-center gap-2">
-        <svg width="16" height="4"><line x1="0" y1="2" x2="16" y2="2" stroke="#aca1ff" strokeWidth="1.5" strokeDasharray="4 2" /></svg>
+        <svg width="16" height="4">
+          <line
+            x1="0"
+            y1="2"
+            x2="16"
+            y2="2"
+            stroke="#aca1ff"
+            strokeWidth="1.5"
+            strokeDasharray="4 2"
+          />
+        </svg>
         <p className="text-[10px] text-toca-navy/40">Average score</p>
       </div>
     </div>
@@ -83,9 +125,10 @@ export default function ProfilePage(): ReactElement {
   if (profile === null) return <ErrorMessage message="Profile not available" />;
 
   const totalGoals = sessions.reduce((sum, s) => sum + s.numberOfGoals, 0);
-  const avgScore = sessions.length > 0
-    ? (sessions.reduce((sum, s) => sum + s.score, 0) / sessions.length).toFixed(1)
-    : '—';
+  const avgScore =
+    sessions.length > 0
+      ? (sessions.reduce((sum, s) => sum + s.score, 0) / sessions.length).toFixed(1)
+      : '—';
   const bestStreak = sessions.reduce((max, s) => Math.max(max, s.bestStreak), 0);
 
   return (
@@ -97,7 +140,9 @@ export default function ProfilePage(): ReactElement {
           <div className="flex items-center gap-6">
             <Avatar firstName={profile.firstName} lastName={profile.lastName} />
             <div className="min-w-0">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-toca-purple">{profile.centerName}</p>
+              <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-toca-purple">
+                {profile.centerName}
+              </p>
               <h1 className="font-poppins mb-1 text-4xl font-bold text-white">
                 {profile.firstName} {profile.lastName}
               </h1>
@@ -106,8 +151,12 @@ export default function ProfilePage(): ReactElement {
           </div>
           {/* Right: meta */}
           <div className="shrink-0 text-right">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/40">Member since</p>
-            <p className="mt-0.5 text-lg font-semibold text-white">{formatDate(profile.createdAt)}</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/40">
+              Member since
+            </p>
+            <p className="mt-0.5 text-lg font-semibold text-white">
+              {formatDate(profile.createdAt)}
+            </p>
           </div>
         </div>
       </div>
